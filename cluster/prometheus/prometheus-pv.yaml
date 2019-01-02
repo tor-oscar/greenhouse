@@ -1,0 +1,24 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: prometheus-pv
+  namespace: monitoring
+  labels:
+    app: prometheus
+spec:
+  storageClassName: prometheus-storage
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  local:
+    path: "/var/k8s/pvs/prometheus/"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - gh02
