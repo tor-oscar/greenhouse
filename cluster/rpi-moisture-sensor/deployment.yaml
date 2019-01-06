@@ -1,0 +1,44 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: rpi-moisture-sensor
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rpi-moisure-sensor
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - gh03
+      containers:
+      - name: rpi-moisture-sensor
+        image: drunkinfant/rpi-moisture-sensor:0.2.0
+        args: ["/bin/rpi-moisture-sensor", "--id", "$(SENSOR_ID)", "--val", "$(VAL_PIN)", "--pwr", "$(PWR_PIN)", "--interval", "$(INTERVAL)", "rabbitmq", "--host", "rabbitmq:5672", "--exchange", "$(RABBITMQ_EXCHANGE)"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: socket-volume
+          mountPath: /app/socket
+        env:
+        - name: SENSOR_ID
+          value: "moist1"
+        - name: PWR_PIN
+          value: "17"
+        - name: VAL_PIN
+          value: "27"
+        - name: RABBITMQ_EXCHANGE
+          value: "sensor_samples"
+        - name: INTERVAL
+          value: "60"
+      volumes:
+      - name: socket-volume
+        emptyDir: {}
