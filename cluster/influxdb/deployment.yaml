@@ -1,0 +1,65 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: default
+  name: influxdb
+  labels:
+    app: influxdb
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: influxdb
+  ports:
+  - name: http
+    port: 8086
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: influxdb
+  namespace: default
+spec:
+  serviceName: influxdb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: influxdb
+        image: influxdb:1.7.2
+        volumeMounts:
+          - name: influxdb
+            mountPath: /var/lib/influxdb
+        ports:
+          - name: http
+            protocol: TCP
+            containerPort: 8086
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: INFLUXDB_DATA_CACHE_MAX_MEMORY_SIZE
+            value: "128m"
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+  volumeClaimTemplates:
+  - metadata:
+      name: influxdb
+    spec:
+      selector:
+        matchLabels:
+          app: influxdb
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 20Gi
