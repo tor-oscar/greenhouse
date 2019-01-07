@@ -5,10 +5,13 @@ metadata:
   namespace: default
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: rpi-moisture-sensor
   template:
     metadata:
       labels:
-        app: rpi-moisure-sensor
+        app: rpi-moisture-sensor
     spec:
       affinity:
         nodeAffinity:
@@ -39,6 +42,13 @@ spec:
           value: "sensor_samples"
         - name: INTERVAL
           value: "60"
+        resources:
+          limits:
+            cpu: 100m
+            memory: 32Mi
+          requests:
+            cpu: 100m
+            memory: 16Mi
       volumes:
       - name: socket-volume
         emptyDir: {}
