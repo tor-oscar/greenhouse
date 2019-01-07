@@ -11,4 +11,5 @@ Common docker images at `https://hub.docker.com/u/arm32v7/`.
 
 ## Included repositories
 
- * https://github.com/DrunkenInfant/rpi-moisture-sensor
+ * `https://github.com/DrunkenInfant/rpi-moisture-sensor`
+ * `https://github.com/DrunkenInfant/sensor_sample_indexer`
