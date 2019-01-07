@@ -5,7 +5,7 @@ metadata:
   namespace: default
 data:
   enabled_plugins: |
-      [rabbitmq_management,rabbitmq_peer_discovery_k8s].
+      [rabbitmq_management,rabbitmq_peer_discovery_k8s,rabbitmq_shovel,rabbitmq_shovel_management].
 
   rabbitmq.conf: |
       ## Cluster formation. See http://www.rabbitmq.com/cluster-formation.html to learn more.
