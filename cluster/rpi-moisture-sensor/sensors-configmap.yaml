@@ -10,3 +10,9 @@ data:
       moist01.pwr_pin = 17
       moist01.val_pin = 27
       moist01.pwr_wait = 50
+  gh02.toml: |
+      [sensors]
+      moist02.sensor_type = 'soil_moisture'
+      moist02.pwr_pin = 17
+      moist02.val_pin = 27
+      moist02.pwr_wait = 50
