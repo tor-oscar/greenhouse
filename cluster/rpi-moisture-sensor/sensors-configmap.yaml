@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rpi-moisture-sensor-config
+  namespace: default
+data:
+  gh03.toml: |
+      [sensors]
+      moist01.sensor_type = 'soil_moisture'
+      moist01.pwr_pin = 17
+      moist01.val_pin = 27
+      moist01.pwr_wait = 50

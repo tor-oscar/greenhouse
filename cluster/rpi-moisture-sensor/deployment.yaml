@@ -24,14 +24,18 @@ spec:
                 - gh03
       containers:
       - name: rpi-moisture-sensor
-        image: drunkinfant/rpi-moisture-sensor:0.2.0
-        args: ["/bin/rpi-moisture-sensor", "--id", "$(SENSOR_ID)", "--val", "$(VAL_PIN)", "--pwr", "$(PWR_PIN)", "--interval", "$(INTERVAL)", "rabbitmq", "--host", "rabbitmq:5672", "--exchange", "$(RABBITMQ_EXCHANGE)"]
+        image: drunkinfant/rpi-moisture-sensor:0.3.0
+        args: ["/bin/rpi-moisture-sensor", "--config", "/etc/sensors/$(RPI_NAME).toml", "--interval", "$(INTERVAL)", "rabbitmq", "--host", "rabbitmq:5672", "--exchange", "$(RABBITMQ_EXCHANGE)"]
         securityContext:
           privileged: true
         volumeMounts:
-        - name: socket-volume
-          mountPath: /app/socket
+          - name: config-volume
+            mountPath: /etc/sensors
         env:
+        - name: RPI_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         - name: SENSOR_ID
           value: "moist1"
         - name: PWR_PIN
@@ -50,5 +54,6 @@ spec:
             cpu: 100m
             memory: 16Mi
       volumes:
-      - name: socket-volume
-        emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: rpi-moisture-sensor-config
