@@ -26,8 +26,8 @@ spec:
                 - soil_moisture
       containers:
       - name: rpi-moisture-sensor
-        image: drunkinfant/rpi-moisture-sensor:0.3.1
-        args: ["/bin/rpi-moisture-sensor", "--config", "/etc/sensors/$(RPI_NAME).toml", "--interval", "$(INTERVAL)", "rabbitmq", "--host", "rabbitmq:5672", "--exchange", "$(RABBITMQ_EXCHANGE)"]
+        image: drunkinfant/rpi-moisture-sensor:0.4.0
+        args: ["/bin/rpi-moisture-sensor", "--config", "/etc/sensors/$(RPI_NAME).toml", "rabbitmq", "--host", "rabbitmq:5672", "--exchange", "$(RABBITMQ_EXCHANGE)"]
         securityContext:
           privileged: true
         volumeMounts:
@@ -40,8 +40,6 @@ spec:
               fieldPath: spec.nodeName
         - name: RABBITMQ_EXCHANGE
           value: "sensor_samples"
-        - name: INTERVAL
-          value: "20"
         resources:
           limits:
             cpu: 100m
