@@ -29,3 +29,16 @@ kubectl create secret generic --dry-run grafana-credentials \
 kubectl apply -f grafana-deployment.yaml
 kubectl apply -f grafana-service.yaml
 ```
+
+## Additional information
+
+### Slack Alerts
+
+ 1. Follow the instructions at
+    `https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack`
+    to add an app and a webhook to your Slack workspace. Slack apps are listen
+    at `https://api.slack.com/apps`.
+
+ 2. In the grana ui, use the bell icon on the left to add a `notification channel`.
+    Set the type to `Slack` and set the webhook url you got from the the slack
+    setup. The `Recipient`, `Mention` and `Token` fields are optional.
