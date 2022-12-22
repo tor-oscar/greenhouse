@@ -4,9 +4,20 @@
 Raspian stretch lite: https://www.raspberrypi.org/downloads/raspbian/
 
  * Write image to sdcard.
+   - `sudo dd if=<imagepath> of=/dev/mmcblk0 bs=32M`
  * Resize second partition
- * Create `ssh` file on boot partition (the first one)
+   - `sudo fdisk /dev/mmcblk0p2`
+   - `sudo resize2fs /dev/mmcblk0p2`
+ * Mount boot partition
+   - `sudo mount /dev/mmcblk0p1 ./boot`
+ * Create `userconf` file in root of boot partition
+   - `echo "greenhouse:$(openssl passwd -6 <passwd>)" > ./boot/userconf`
+ * Create `ssh` file on boot partition
+   - `touch ./boot/ssh`
  * Edit hostname in `/etc/hostname` and `/etc/hosts`
+   - `sudo mount /dev/mmcblk0p2 ./rpi`
+   - `vim ./rpi/etc/hostname`
+   - `vim ./rpi/etc/hosts`
 
 ## Setup OS
 
